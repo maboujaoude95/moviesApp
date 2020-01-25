@@ -13,12 +13,11 @@ class DiscoverViewModel {
     var movies = [Movie]()
 
     init() {
-        getNowPlayingMovies()
-        print(movies)
+        getMovies(endpoint: .nowPlaying)
     }
 
-    private func getNowPlayingMovies() {
-        MovieServiceAPI.shared.fetchMovies(from: .nowPlaying) { (result: Result<MoviesResponse, MovieServiceAPI.APIServiceError>) in
+    func getMovies(endpoint: MovieServiceAPI.Endpoint) {
+        MovieServiceAPI.shared.fetchMovies(from: endpoint) { (result: Result<MoviesResponse, MovieServiceAPI.APIServiceError>) in
             switch result {
             case .success(let movieResponse):
                 self.movies = movieResponse.results
@@ -29,8 +28,19 @@ class DiscoverViewModel {
         }
     }
 
-    func movieItem(at indexPath: IndexPath) -> Movie? {
+    func getMovie(at indexPath: IndexPath) -> Movie {
         return movies[indexPath.row]
+    }
+
+    func getSearch(with query: String) {
+        MovieServiceAPI.shared.searchMovies(from: .search, query: query) { (result: Result<MoviesResponse, MovieServiceAPI.APIServiceError>) in
+            switch result {
+            case .success(let movieResponse):
+                self.movies = movieResponse.results
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
 }

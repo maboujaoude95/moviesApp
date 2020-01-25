@@ -19,4 +19,5 @@ public struct Movie: Codable {
     let adult: Bool
     let popularity: Float
     let posterPath: String?
+    let backdropPath: String?
 }

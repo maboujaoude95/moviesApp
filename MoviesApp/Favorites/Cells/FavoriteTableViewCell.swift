@@ -17,21 +17,27 @@ class FavoriteTableViewCell: UITableViewCell, ReusableCell {
 
     let movieImageView = UIImageView()
     let titleLabel = UILabel()
+    let dateLabel = UILabel()
     let favoriteButton = UIButton()
     var currentMovie: Movie?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        self.movieImageView.translatesAutoresizingMaskIntoConstraints = false
+        movieImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(movieImageView)
 
-        self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.titleLabel.textColor = .white
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .white
         contentView.addSubview(titleLabel)
+        
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.textColor = .white
+        dateLabel.font = UIFont.systemFont(ofSize: 10)
+        contentView.addSubview(dateLabel)
 
-        self.favoriteButton.translatesAutoresizingMaskIntoConstraints = false
-        self.favoriteButton.addTarget(self, action: #selector(removeFavorite), for: .touchUpInside)
+        favoriteButton.translatesAutoresizingMaskIntoConstraints = false
+        favoriteButton.addTarget(self, action: #selector(removeFavorite), for: .touchUpInside)
         contentView.addSubview(favoriteButton)
 
         addConstraints()
@@ -46,8 +52,12 @@ class FavoriteTableViewCell: UITableViewCell, ReusableCell {
             self.movieImageView.widthAnchor.constraint(equalToConstant: 80)
         ])
         NSLayoutConstraint.activate([
-            self.titleLabel.leadingAnchor.constraint(equalTo: self.movieImageView.trailingAnchor, constant: padding),
-            self.titleLabel.centerYAnchor.constraint(equalTo: self.movieImageView.centerYAnchor)
+            titleLabel.leadingAnchor.constraint(equalTo: movieImageView.trailingAnchor, constant: padding),
+            titleLabel.bottomAnchor.constraint(equalTo: dateLabel.topAnchor)
+        ])
+        NSLayoutConstraint.activate([
+            dateLabel.leadingAnchor.constraint(equalTo: movieImageView.trailingAnchor, constant: padding),
+            dateLabel.centerYAnchor.constraint(equalTo: movieImageView.centerYAnchor)
         ])
         NSLayoutConstraint.activate([
             self.favoriteButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -padding),
@@ -57,6 +67,7 @@ class FavoriteTableViewCell: UITableViewCell, ReusableCell {
 
     func setup(movie: Movie) {
         self.titleLabel.text = movie.title
+        self.dateLabel.text = "\(movie.releaseDate)"
         self.movieImageView.downloadImage(with: movie.posterPath)
         self.backgroundColor = .black
         self.selectionStyle = .none

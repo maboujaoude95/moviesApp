@@ -14,7 +14,7 @@ class MovieServiceAPI {
     private init() {}
     private let urlSession = URLSession.shared
     private let baseURL = URL(string: "https://api.themoviedb.org/3")!
-    private let apiKey = "API_GOES_HERE"
+    private let apiKey = "0cbbc1eb0822ec33ebc1001d0074041b"
     private let jsonDecoder: JSONDecoder = {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
